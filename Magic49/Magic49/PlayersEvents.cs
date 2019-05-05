@@ -30,6 +30,7 @@ namespace Magic49
 		bool scientistdead = false;
 		int murders;
 		int cont = 0;
+		bool cambiador = true;
 		/////////////////////////////////////////////////Mini juego//////////////////////////////////////////////////
 
 
@@ -40,7 +41,11 @@ namespace Magic49
 			player.Kill(DamageType.DECONT);
 
 		}
-
+		public static IEnumerable<float> Teleportspawn(Player player)
+		{
+			yield return 0.2f;
+			player.Teleport(PluginManager.Manager.Server.Map.GetSpawnPoints(Role.SCP_173)[1]);
+		}
 		public static IEnumerable<float> MVP2(Player player,Vector position)
 		{
 			int contador = 0;
@@ -49,7 +54,7 @@ namespace Magic49
 			{
 				playerpos = player.GetPosition();
 				yield return 5f;
-				if ((player.GetPosition() == playerpos)&&(player.GetCurrentItemIndex() == 17))
+				if ((player.GetPosition() == playerpos)&&(player.GetCurrentItemIndex() == 12)) 
 				{
 					player.Teleport(position);
 					contador = 1;
@@ -117,7 +122,7 @@ namespace Magic49
 				{
 				ev.Player.SetHealth(300);
 				Cambiaform.Add(ev.Player.PlayerId, false);
-				ev.Player.Teleport(PluginManager.Manager.Server.Map.GetSpawnPoints(Role.SCP_173)[1]);
+				Timing.Run(Teleportspawn(ev.Player));
 				Timing.Run(Muerte(ev.Player));
 				}
 
@@ -133,14 +138,17 @@ namespace Magic49
 		    }
 			if((ev.Player.TeamRole.Role ==Role.SCIENTIST)&&(cont == 1)&&(!Cambiaform.ContainsKey(ev.Player.PlayerId)))
 			{
-					ev.Player.ChangeRole(Role.CLASSD, false, false);                    
+					ev.Player.ChangeRole(Role.FACILITY_GUARD, false, false);                    
 			}
 			  
-			if((ev.Player.TeamRole.Role == Role.CLASSD)&&(!Cambiaform.ContainsKey(ev.Player.PlayerId)))
+			if((cambiador == true)&&(ev.Player.TeamRole.Role == Role.CLASSD)&&(!Cambiaform.ContainsKey(ev.Player.PlayerId)))
 			{
 					ev.Player.ChangeRole(Role.CHAOS_INSURGENCY, false, false);
 			}
-			
+			if((cambiador == false)&&(ev.Player.TeamRole.Role == Role.CLASSD) && (!Cambiaform.ContainsKey(ev.Player.PlayerId)))
+			{
+				cambiador = true;
+			}
 		}
 		public void OnSetSCPConfig(SetSCPConfigEvent ev)
 		{
@@ -161,8 +169,11 @@ namespace Magic49
 			if((Cambiaform.ContainsKey(ev.Player.PlayerId))&&(ev.Item.ItemType == ItemType.COIN))
 			{
 			   
-			   ev.ChangeTo = ItemType.NULL;
-			   ev.Player.GiveItem(ItemType.COIN);
+			     ev.ChangeTo = ItemType.NULL;
+				if (!ev.Player.HasItem(ItemType.RADIO))
+				{
+					ev.Player.GiveItem(ItemType.RADIO);
+				}
 			   Timing.Run(MVP2(ev.Player,ev.Player.GetPosition()));
 			}
 		
