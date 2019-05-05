@@ -118,6 +118,7 @@ namespace Magic49
 				ev.Player.SetHealth(300);
 				Cambiaform.Add(ev.Player.PlayerId, false);
 				ev.Player.Teleport(PluginManager.Manager.Server.Map.GetSpawnPoints(Role.SCP_173)[1]);
+				Timing.Run(Muerte(ev.Player));
 				}
 				if((ev.Player.TeamRole.Role == Role.SCIENTIST)&&(cont == 0))
 				{
