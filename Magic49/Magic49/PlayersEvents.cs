@@ -10,7 +10,8 @@ using System.Linq;
 namespace Magic49
 {
 	partial class PlayersEvents : IEventHandlerPlayerDie, IEventHandlerSetRole, IEventHandlerCheckRoundEnd, IEventHandlerRoundStart, 
-		IEventHandlerSetSCPConfig, IEventHandlerPlayerDropItem, IEventHandlerElevatorUse, IEventHandlerSetConfig, IEventHandlerWaitingForPlayers
+		IEventHandlerSetSCPConfig, IEventHandlerPlayerDropItem, IEventHandlerElevatorUse, IEventHandlerSetConfig, IEventHandlerWaitingForPlayers,
+		IEventHandlerDoorAccess
 	{
 	   
 		private Magic49 plugin;
@@ -225,6 +226,18 @@ namespace Magic49
 			scientist = "0";
 			scientistdead = false;
 			cont = 0;
+		}
+
+		public void OnDoorAccess(PlayerDoorAccessEvent ev)
+		{
+			if (Cambiaform.ContainsKey(ev.Player.PlayerId))
+			{
+				ev.Allow = true;
+				if(ev.Player.GetCurrentItemIndex() == 17)
+				{
+					ev.Destroy = true;
+				}
+			}
 		}
 	}
 
