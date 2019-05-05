@@ -150,14 +150,10 @@ namespace Magic49
 			ev.Ban173 = true;
 			ev.Ban939_53 = true;
 			ev.Ban939_89 = true;
-			if (jugadores <= 15)
-			{
-				ev.SCP049amount = 1;
-			}
-			else
-			{
-				ev.SCP049amount = 2;
-			}
+			
+			
+			ev.SCP049amount = 2;
+			
 		}
 
 		public void OnPlayerDropItem(PlayerDropItemEvent ev)
