@@ -120,8 +120,9 @@ namespace Magic49
 				ev.Player.Teleport(PluginManager.Manager.Server.Map.GetSpawnPoints(Role.SCP_173)[1]);
 				Timing.Run(Muerte(ev.Player));
 				}
-				if((ev.Player.TeamRole.Role == Role.SCIENTIST)&&(cont == 0))
-				{
+
+			if ((ev.Player.TeamRole.Role == Role.SCIENTIST)&&(cont == 0))
+			{
 					scientist = ev.Player.SteamId;
 					ev.Player.GiveItem(ItemType.P90);
 					ev.Player.SetAmmo(AmmoType.DROPPED_5,300);
@@ -129,16 +130,16 @@ namespace Magic49
 					ev.Player.SetAmmo(AmmoType.DROPPED_9, 300);
 					ev.Player.SetGodmode(true);
 					cont = 1;
-				}
-				if((ev.Player.TeamRole.Role ==Role.SCIENTIST)&&(cont == 1)&&(!Cambiaform.ContainsKey(ev.Player.PlayerId)))
-				{
+		    }
+			if((ev.Player.TeamRole.Role ==Role.SCIENTIST)&&(cont == 1)&&(!Cambiaform.ContainsKey(ev.Player.PlayerId)))
+			{
 					ev.Player.ChangeRole(Role.CLASSD, false, false);                    
-				}
+			}
 			  
-				if((ev.Player.TeamRole.Role == Role.CLASSD)&&(!Cambiaform.ContainsKey(ev.Player.PlayerId)))
-			    {
+			if((ev.Player.TeamRole.Role == Role.CLASSD)&&(!Cambiaform.ContainsKey(ev.Player.PlayerId)))
+			{
 					ev.Player.ChangeRole(Role.CHAOS_INSURGENCY, false, false);
-				}
+			}
 			
 		}
 		public void OnSetSCPConfig(SetSCPConfigEvent ev)
